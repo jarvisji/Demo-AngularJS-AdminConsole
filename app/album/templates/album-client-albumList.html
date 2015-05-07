@@ -1,0 +1,13 @@
+这是相册列表
+<div class="row">
+    <div class="col-md-12" ng-show="albumList == undefined || albumList.length == 0">
+        <span>没有相册</span>
+    </div>
+    <div class="col-xs-6 col-md-3" ng-repeat="album in albumList">
+        <a href="" class="thumbnail" ng-click="showAlbumPhotos($index)">
+            <img ng-src="{{album.WlsAlbum.coverUrl}}">
+        </a>
+        <span>{{album.WlsAlbum.albumName}}</span>
+        <span>{{album.WlsAlbum.description}}</span>
+    </div>
+</div>

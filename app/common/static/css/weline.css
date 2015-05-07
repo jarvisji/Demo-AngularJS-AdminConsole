@@ -1,0 +1,232 @@
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: "Microsoft YaHei", "微软雅黑", Helvetica, "黑体", Arial, Tahoma;
+}
+
+/*
+* Original Bootstrap's CSS depends on empty href attributes to style cursors for several components (pagination, tabs etc.).
+* But in AngularJS adding empty href attributes to link tags will cause unwanted route changes. This is why we need to
+* remove empty href attributes from directive templates and as a result styling is not applied correctly. The remedy is
+* simple, just add the following styling to your application:
+* Refer to: http://angular-ui.github.io/bootstrap/
+*/
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer;
+}
+
+a, a:hover {
+    text-decoration: none;
+}
+
+/* >> Override ACE style, show current managing weixin account in different style in nav-bar.*/
+.ace-nav > li.selected > a {
+    background-color: #fff;
+    color: #2e6589;
+}
+
+.ace-nav .selected .nav-user-photo {
+    border: 2px solid #2e6589;
+}
+
+/*<<*/
+
+/* Override ACE style, make logo area as same width as side menu. */
+.navbar > .container .navbar-brand {
+    width: 190px;
+    margin: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+/* Override ACE style, limit logo image height avoid stretch the nav-bar. */
+.navbar-brand img {
+    height: 35px;
+}
+
+/* Override ACE style, make the blue line at right side of selected menu items align to inner of the side menu */
+.nav-list > li.active:after {
+    right: -1px;
+}
+
+/* Override ACE style, in some page, header will increase height to cover 100% of window, believe the reason is float position, but I haven't found solution */
+.ace-nav {
+    /*TODO:J why original setting, height:100% doesn't work on some pages, but work on other pages?*/
+    /* height: 100%; */
+    height: auto;
+}
+
+.wl-header-search {
+    position: absolute;
+    width: 450px;
+    top: 12px;
+    right: 19px;
+    line-height: 24px;
+}
+
+/* 	Override ace tags style.
+ *	.tags, ace.css:14115
+ *	.ace-thumbnails>li .tags, ace.min.css:7670
+ */
+.tags, .ace-thumbnails > li .tags {
+    display: inline-block;
+    padding: 4px 6px;
+    color: #777;
+    vertical-align: middle;
+    background-color: #FFF;
+    /* border:1px solid #d5d5d5; */
+    width: 100%;
+    direction: ltr;
+}
+
+.tags .tag {
+    padding: 4px 22px 4px 9px
+}
+
+.tags input[type="text"], .tags input[type="text"]:focus {
+    border: 1px solid #d5d5d5;
+    font-size: 13px; /* same to ".tags .tag", make sure alignment vertically */
+    font-weight: normal;
+    display: inline;
+    outline: 0;
+    padding: 0;
+    width: 100px;
+    height: 28px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.tablecell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td{
+	vertical-align: middle;
+}
+
+/*
+ * Introduce bootstrap class which ACE dropped.
+ */
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/**
+ * 	Override ACE file uploader style, the preview image with should match parent container.
+ */
+.ace-file-multiple .file-label .file-name.large img {
+    width: 100%;
+}
+
+/**
+ * ACE set style:
+ * .form-group>label[class*="col-"] {
+ * 	  padding-top: 4px;
+ * }
+ * To make the text has similar hieght as label, we increase line-height 2x.
+ */
+.form-group span {
+    line-height: 2;
+}
+
+.btn span {
+    line-height: inherit;
+}
+
+/*头像上传部分高度固定*/
+.nav-user-photo {
+    height: 40px;
+    width: 40px;
+}
+.btn-state, .btn-state:focus {
+	background-color:#f9f9f9!important;
+	border-color:#ddd
+}
+.btn-state:hover, .open .btn-state.dropdown-toggle {
+	background-color:#eff4f7!important;
+	border-color:#ddd
+}
+.btn-state.no-border:hover {
+	border-color:#ddd
+}
+.btn-state.no-hover:hover {
+	background-color:#f9f9f9!important
+}
+.btn-state.active {
+	background-color:#949494!important;
+	border-color:#ddd
+}
+.btn-state.no-border.active {
+	background-color:#949494!important;
+	border-color:#ddd
+}
+.btn-state.disabled, .btn-state[disabled], fieldset[disabled] .btn-state, .btn-state.disabled:hover, .btn-state[disabled]:hover, fieldset[disabled] .btn-state:hover, .btn-state.disabled:focus, .btn-state[disabled]:focus, fieldset[disabled] .btn-state:focus, .btn-state.disabled:active, .btn-state[disabled]:active, fieldset[disabled] .btn-state:active, .btn-state.disabled.active, .btn-state[disabled].active, fieldset[disabled] .btn-state.active {
+	background-color:#f9f9f9!important;
+	border-color:#ddd
+}
+
+
+
+.ace-thumbnails {
+    list-style: none;
+    width: 100%;
+    margin: 0;
+    padding: 0
+}
+.ace-thumbnails > li {
+    float: left;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    margin-left: 0px;
+    margin-top: 0px;
+    /*margin-bottom:20px;*/
+    margin-bottom: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+}
+.thumbnail_PL_pic {
+    display: inline-block;
+    display: block;
+    height: auto;
+    width: 157px;
+    line-height: 1.428571429;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    margin-top: 20px;
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out
+}
+.thumbnail_PL_pic .text {
+    width: 165px;
+    height: 165px;
+    margin-top: -10px;
+    margin-left: -10px;
+}
+.Picimg_material_preview {
+    width: 145px;
+    height: 145px;
+    text-align: center;
+    overflow: hidden;
+    background-color: #fff;
+}
+.Picimg_material_preview img, .Picimg_material_preview span {
+
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    vertical-align: middle;
+}
+.Picimg_material_preview img {
+
+    width: 145px;
+    margin: 0px auto;
+}
+.Picimg_material_preview span {
+    width: 0;
+    height: 100%;
+}

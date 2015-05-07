@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="wlcFileUploader">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="common/lib/css/bootstrap.min.css" rel="stylesheet">
+    <link href="common/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="common/lib/css/ace.min.css" rel="stylesheet">
+
+    <link href="common/components/umeditor/themes/default/css/umeditor.css" rel="stylesheet">
+    <link href="common/static/css/demo.css" rel="stylesheet">
+</head>
+<body ng-controller="Ctrl">
+
+
+<form name="form">
+    text, required, min=2, max=10: <br>
+    <input type="text" name="txt" ng-model="txt" ng-minlength="2" ng-maxlength="10" maxlength="8" required>
+    $error: {{form.txt.$error}}, {{form.txt.$dirty}}, {{form.txt.$invalid}}
+    <hr>
+    number, required, min=0:<br>
+    <input type="number" name="num" ng-model="num" min="0" ng-pattern="/^(([1-9]\d{0,9})|0)(\.\d{1,2})?$/" required>
+    $error: {{form.num.$error}}, {{form.num.$dirty}}, {{form.num.$invalid}}
+</form>
+
+
+<script src="common/lib/js/angular.min.js"></script>
+<script src="common/lib/js/angular-route.min.js"></script>
+<script src="common/lib/js/ui-bootstrap-tpls.js"></script>
+<script src="common/lib/js/jquery-2.0.3.min.js"></script>
+<script src="common/lib/js/jquery-ui-1.10.3.custom.min.js"></script>
+
+<!--<script src="common/components/ueditor/ueditor.config.js"></script>-->
+<!--<script src="common/components/ueditor/ueditor.all.js"></script>-->
+<script src="common/components/umeditor/umeditor.config.js"></script>
+<script src="common/components/umeditor/umeditor.js"></script>
+<script src="common/components/umeditor/lang/zh-cn/zh-cn.js"></script>
+
+<script src="common/components/menu/menu-controller.js"></script>
+<script src="common/components/header/header-controller.js"></script>
+<script src="common/components/uploader/wlc-file-uploader.js"></script>
+<script src="common/components/uploader/angular-file-upload.js"></script>
+<script src="common/utils/wlc-utils.js"></script>
+<script src="common/wlc-helpers.js"></script>
+<script src="base/index-controller.js"></script>
+<script>
+    function Ctrl($scope) {
+
+    }
+</script>
+</body>
+</html>

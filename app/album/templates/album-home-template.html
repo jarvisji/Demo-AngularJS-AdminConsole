@@ -1,0 +1,195 @@
+<div class="page-header">
+	<h1> 相册设置 </h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+	<div class="col-md-9">
+		<div class="row">
+			<div class="col-md-12">
+				<div wlc-file-uploader="{type:'image', previewMode:'', desc:'{supportTypes}', queueLimit: '999999', appendTs:'each', modelValue:'last'}"
+				ng-model="uploadedPhotoUrl" name="uploadedPhotoUrl"></div>
+			</div>
+		</div>
+		<!-- 暂时无用的代码
+		<div class="row">
+		<div class="col-md-12">
+
+		</div>
+		</div>-->
+		<div class="row">
+			<div class="col-md-12">
+
+				<ul class="ace-thumbnails" style="margin-top:10px;"  id="imageList">
+					<li class="thumbnail_PL_pic" ng-repeat="photo in albumPhotos" id="{{photo.id}}">
+						<a class="cboxElement" href="{{photo.url}}" data-rel="colorbox">
+						<div class="Picimg_material_preview">
+							<img alt="图片不存在" src="{{photo.url}}"><span></span>
+						</div>
+						<div class="text">
+							<div class="inner">
+								{{photo.filename}}
+							</div>
+						</div> </a>
+						<div class="tools tools-bottom">
+                            <a href="" tooltip="设为封面" ng-click="setCover($index)"> <i class="icon-picture"></i></a>
+							<a href="" tooltip="编辑" ng-click="editPhoto($index)"> <i class="icon-pencil"></i></a>
+							<a href="" tooltip="删除" ng-click="deletePhoto($index)"><i class="icon-remove"></i></a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-3">
+		<button class="btn btn-sm btn-primary btn-block" ng-click="createTopAlbum()">
+			添加新相册
+		</button>
+		<div class="dd">
+			<ol class="dd-list">
+				<li class="dd-item" ng-class="{'item-red':selectedAlbumId=='nonalbum'}">
+					<div class="dd-handle">
+						<a href="" ng-click="showPhotos('nonalbum')">未纳入相册 ({{nonAlbumPhotoCount}})</a>
+					</div>
+				</li>
+				<li class="dd-item" ng-repeat="albumItem in albumList"
+				ng-class="{'item-red':selectedAlbumId==albumItem.WlsAlbum.id}">
+					<!-- 顶层相册显示条目 -->
+					<div class="dd-handle" ng-if="editingTopAlbumIndex != $index">
+						<a class="blue" href="" ng-if="albumItem.childAlbumCount > 0"
+						ng-click="toggleChildAlbum($index)"> <i class="icon-plus" ng-show="!albumItem.isExpand"></i> <i class="icon-minus" ng-show="albumItem.isExpand"></i></a>
+						<a href="" ng-click="showPhotos(albumItem.WlsAlbum.id)"> {{albumItem.WlsAlbum.albumName}} ({{albumItem.photoCount}}) </a>
+						<!--操作菜单 -->
+						<div style="margin-top:-5px; margin-right:-10px;" class="btn-group pull-right" dropdown is-open="albumOperationDropdownOpen">
+							<button type="button" class="btn btn-sm btn-link dropdown-toggle">
+								<i class="red icon-ellipsis-vertical bigger-130"></i>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<!--<li><a href="" ng-click="createChildAlbum($index)">-->
+								<!--<i class="icon-plus bigger-110"></i>&nbsp;&nbsp;创建子相册</a></li>-->
+								<li>
+									<a href="" ng-click="editTopAlbum($index)"><i class="icon-pencil bigger-110"></i>&nbsp;&nbsp;编辑</a>
+								</li>
+								<li>
+									<a href="" ng-click="setAlbumToTop($index)"><i class="icon-thumbs-up bigger-110"></i>&nbsp;&nbsp;置顶</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="" ng-click="deleteTopAlbum($index)"><i class="red icon-trash bigger-110"></i><span class="red">&nbsp;&nbsp;删除</span></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- 顶层相册的表单 -->
+					<div class="dd-handle" ng-if="editingTopAlbumIndex == $index">
+						<form name="form" novalidate>
+							<div class="form-group" ng-class="{'has-error':form.albumname.$dirty && form.albumname.$invalid}" >
+								<label>相册名称：</label>
+								<input maxlength="20" name="albumname" type="text" class="form-control" ng-model="albumItem.WlsAlbum.albumName"
+								required/>
+								<div class="red"
+								ng-show="form.albumname.$dirty && form.albumname.$invalid">
+									<span class="red" ng-show="form.albumname.$error.required">请输入相册名称</span>
+								</div>
+							</div>
+
+							<div class="form-group" ng-class="{'has-error':form.albumdesc.$dirty && form.albumdesc.$invalid}">
+								<label>相册简介：</label>
+								<textarea name="albumdesc" rows="3" maxlength="100" class="form-control"
+								ng-model="albumItem.WlsAlbum.description" required/>
+								</textarea>
+								<div class="red"
+								ng-show="form.albumdesc.$dirty && form.albumdesc.$invalid">
+									<span class="red" ng-show="form.albumdesc.$error.required">请输入相册简介</span>
+								</div>
+							</div>
+							<div class="form-group">
+                                <label>私有：</label>
+                                <input type="checkbox" ng-model="albumItem.WlsAlbum.isPrivate">
+                            </div>
+							<hr>
+							<button class="btn btn-sm btn-primary width-60" ng-click="saveTopAlbum()"
+							ng-disabled="form.$invalid">
+								确定
+							</button>
+							<button class="btn btn-sm btn-default width-35 pull-right" ng-click="cancelTopAlbum()">
+								取消
+							</button>
+						</form>
+					</div>
+
+					<ol class="dd-list" ng-show="albumItem.isExpand">
+						<li class="dd-item" ng-repeat="subAlbum in albumItem.subAlbums">
+							<div class="dd-handle" ng-if="editingSubAlbumIndex != $index">
+								Item 6
+							</div>
+							<div class="dd-handle" ng-if="editingSubAlbumIndex == $index">
+								<form name="form" novalidate>
+									<div class="form-group" ng-class="{'has-error':form.albumname.$dirty && form.albumname.$invalid}">
+										<label>相册名称：</label>
+										<input name="albumname" type="text" class="form-control" ng-model="subAlbum.WlsAlbum.albumName"
+										required />
+										<div class="red"
+										ng-show="form.albumname.$dirty && form.albumname.$invalid">
+											<span class="red" ng-show="form.albumname.$error.required">请输入相册名称</span>
+										</div>
+									</div>
+									<div class="form-group" ng-class="{'has-error':form.albumdesc.$dirty && form.albumdesc.$invalid}">
+										<label>相册简介：</label>
+										<textarea name="albumdesc" rows="3" maxlength="100" class="form-control"
+										ng-model="subAlbum.WlsAlbum.description" required/>
+										</textarea>
+										<div class="red"
+										ng-show="form.albumdesc.$dirty && form.albumdesc.$invalid">
+											<span class="red" ng-show="form.albumdesc.$error.required">请输入相册简介</span>
+										</div>
+									</div>
+									<hr>
+									<button class="btn btn-sm btn-primary width-60" ng-click="saveSubAlbum()"
+									ng-disabled="form.$invalid">
+										确定
+									</button>
+									<button class="btn btn-sm btn-default width-35 pull-right"
+									ng-click="cancelSubAlbum()">
+										取消
+									</button>
+								</form>
+							</div>
+						</li>
+					</ol>
+				</li>
+			</ol>
+		</div>
+
+	</div>
+
+	<script type="text/ng-template" id="editPhotoModal.html">
+		<div class="modal-header">
+		<h4 class="modal-title">编辑照片</h4>
+		</div>
+		<div class="modal-body">
+		<form>
+		<div class="form-group">
+		<label>将照片移动到以下相册：</label>
+		<div class="radio" ng-repeat="album in albums">
+		<label>
+		<input type="radio" name="albumName" ng-model="$parent.selectedAlbumId"
+		ng-click="selectAlbum(album.WlsAlbum.id)" value="{{album.WlsAlbum.id}}">
+		{{album.WlsAlbum.albumName}}
+		</label>
+		</div>
+		</div>
+		<hr/>
+		<div class="form-group">
+		<label>照片简述（50字）：</label>
+		<textarea rows="3" maxlength="50" ng-model="photo.description" class="form-control"></textarea>
+		</div>
+		</form>
+		</div>
+		<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="ok()">确定</button>
+		<button class="btn btn-default" ng-click="cancel()">取消</button>
+		</div>
+	</script>
+
+</div>

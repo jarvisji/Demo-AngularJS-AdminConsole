@@ -1,0 +1,95 @@
+<style>
+    .uploader-preview {
+        background-color: #f3f3f3;
+        -webkit-box-shadow: 3px 3px 3px 0 #e3e3e3;
+        -moz-box-shadow: 3px 3px 3px 0 #e3e3e3;
+        box-shadow: 3px 3px 3px 0 #e3e3e3;
+        border: 1px solid #c3c3c3;
+        margin: 6px 0 0 0;
+    }
+</style>
+
+<div style="position: relative">
+    <!-- TODO: find better solution of change file input style -->
+    <button class="btn btn-info btn-sm" ng-disabled="uploadedFileUrls.length == uploader.queueLimit">选择文件</button>
+    <input type="file" ng-file-select
+           ng-show="uploadedFileUrls.length < uploader.queueLimit"
+           style="position: absolute;top: 0;left: 0;width: 78px;height: 34px;opacity: 0;"/>
+    <span>{{uploader.desc}}</span>
+
+    <!-- simple view -->
+    <div ng-if="uploader.previewMode=='simple'">
+        <!-- simple view, only display thumbs. -->
+        <div class="pull-left" ng-repeat="item in uploader.queue" style="margin: 3px;/*space among progress bars*/">
+            <div ng-show="uploader.isHTML5" ng-thumb="{ file: item.file, height: 100 }"></div>
+            <div ng-show="uploader.isHTML5 && uploader.autoUpload && !item.isError">
+                <div class="progress" style="margin-bottom: 0;">
+                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                </div>
+            </div>
+            <div ng-show="item.isError">
+                <span class="orange">{{item.errMsg}}</span>
+            </div>
+            <div ng-show="!uploader.autoUpload || item.isUploaded" style="text-align: center">
+                <a href="" ng-click="item.remove()">
+                    <i class="icon-trash icon-2x red"></i>
+                </a>
+            </div>
+        </div>
+        <div class="pull-left" ng-repeat="url in uploadedFileUrls">
+            <div ng-show="url">
+                <div>
+                    <img class="uploader-preview" style="height:100px" ng-src="{{url}}">
+                </div>
+                <button class="btn btn-white btn-xs btn-block" ng-click="removePreview($index)">
+                    <i class="icon-trash icon-2x red"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- detail view -->
+    <div ng-if="uploader.previewMode=='detail'">
+        <table class="table">
+            <tbody>
+            <tr ng-repeat="item in uploader.queue">
+                <td>
+                    <strong>{{ item.file.name }}</strong>
+                    <!-- Image preview -->
+                    <!--auto height-->
+                    <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
+                    <!--auto width-->
+                    <!--<div ng-thumb="{ file: item.file, height: 100 }"></div>-->
+                    <!--fixed width and height -->
+                    <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
+                    <div ng-show="uploader.isHTML5" ng-thumb="{ file: item.file, height: 100 }"></div>
+                </td>
+                <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                <td ng-show="uploader.isHTML5">
+                    <div class="progress" style="margin-bottom: 0;">
+                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                    </div>
+                </td>
+                <td class="text-center">
+                    <span ng-show="item.isSuccess"><i class="icon-ok"></i></span>
+                    <span ng-show="item.isCancel"><i class="icon-circle"></i></span>
+                    <span ng-show="item.isError"><i class="icon-remove"></i></span>
+                </td>
+                <td nowrap>
+                    <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()"
+                            ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                        <span class="icon-upload"></span> Upload
+                    </button>
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()"
+                            ng-disabled="!item.isUploading">
+                        <span class="icon-ban-circle"></span> Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                        <span class="icon-trash"></span> Remove
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-cn" ng-app="wlAlbumClient">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="微商城,移动商城,外卖,微信服务,公众号,微相册"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+    <title>微相册</title>
+    <!--<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.css">-->
+    <link href="../common/lib/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../common/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../common/lib/css/jquery.gritter.css" rel="stylesheet">
+    <link href="../common/lib/css/jquery.gritter.ace.css" rel="stylesheet">
+    <link href="static/css/demo-album.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div ng-view></div>
+
+</div>
+<div class="modal" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alert" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header wlshop-modal-header">
+                <h4 class="modal-title">{{modalHeader}}</h4>
+            </div>
+            <div class="modal-body" ng-if="isShowUnsafeContent" ng-bind-html="modalContent"></div>
+            <div class="modal-body" ng-if="!isShowUnsafeContent">
+                {{modalContent}}
+            </div>
+            <div class="modal-footer" ng-show="isShowConfirmBtn">
+                <div class="text-danger pull-left" ng-bind="errMsg"></div>
+                <button class="btn wlshop-btn-theme btn-block" ng-click="confirmCallback()">{{confirmBtnText}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.main-container -->
+<script src="../common/lib/js/angular.min.js"></script>
+<script src="../common/lib/js/angular-route.min.js"></script>
+<script src="../common/lib/js/angular-touch.min.js"></script>
+<script src="../common/lib/js/ui-bootstrap-tpls.min.js"></script>
+<script src="../common/lib/js/jquery-2.0.3.min.js"></script>
+<script src="../common/lib/js/jquery.gritter.js"></script>
+
+<script src="../common/wlc-helpers.js"></script>
+<script src="album-client-controller.js"></script>
+
+</body>
+</html>

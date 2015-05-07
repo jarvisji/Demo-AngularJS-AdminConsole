@@ -1,0 +1,325 @@
+<div class="page-header">
+    <h1>商品管理</h1>
+</div><!-- /.page-header -->
+
+<div class="col-sm-12">
+    <alert type="info" ng-hide="alertMsg==null" close="alertMsg=null" ng-init="alertMsg='添加商品前请选择一个分类。'">
+        {{alertMsg}}
+    </alert>
+</div>
+
+<div class="row">
+
+<div class="col-sm-3">
+    <div class="widget-box transparent">
+        <div class="widget-header widget-header-flat">
+            <h4 class="lighter">商品分类 </h4>
+        </div>
+    </div>
+    <div class="vspace-4"></div>
+    <div class="clearfix">
+
+        <button style="width:105px;" class="btn btn-primary btn-sm" ng-click="createCategory()"
+                ng-disabled="categorySorting">
+            <i class="icon-plus"></i>添加分类
+        </button>
+        <button style="width:105px;" class="btn btn-white pull-right" ng-click="sortCategory()">
+            <i class="icon-tasks"></i>{{sortButtonText}}
+        </button>
+
+    </div>
+    <div class="vspace-4"></div>
+    <ul id="categories" class="item-list ui-sortable">
+        <li id={{category.appCreateTime}} ng-repeat="category in categories"
+            ng-class="{'item-blue2 btn-state':category.selected==true, 'item-default':category.selected!=true}"
+            class="clearfix" style="position: relative; opacity: 1; z-index:auto">
+            <label class="inline">
+                <form name="formcategory" novalidate >
+                    <input style="margin-left:-9px; width:150px;" name="name" type="text" ng-model="category.name"
+                           ng-show="category.edit==true"
+                           ng-keydown="onCategoryNameKeydown($event, $index)" maxlength="8" required/>
+
+                    <div class="red" ng-show="formcategory.name.$dirty && formcategory.name.$invalid">
+                        <span class="red" ng-show="formcategory.name.$error.required">请输入分类名称</span>
+                    </div>
+
+                </form>
+                <a href=""> <span class="lbl pull-left" style="width:140px;" ng-hide="category.edit==true"
+                                  ng-click="categorySorting != true && selectCategory($index)">{{category.name}}</span>
+                </a> </label>
+
+            <div ng-hide="categorySorting == true" class="pull-right action-buttons">
+                <a href="" class="blue" ng-hide="category.edit==true" ng-click="editCategory($index)"><i
+                        class="icon-pencil bigger-130"></i> </a>
+                <a href="" class="red" ng-hide="category.edit==true" ng-click="removeCategory(category)"><i
+                        class="icon-trash bigger-130"></i> </a>
+
+                <a style="margin-top:5px;" href="" class="blue" ng-show="category.edit==true"
+                   ng-click="saveCategory($index)"> <i class="icon-ok bigger-130"></i> </a>
+                <a style="margin-top:5px;" href="" class="red" ng-show="category.edit==true"
+                   ng-click="cancelCategory($index)"> <i class="icon-remove bigger-130"></i> </a>
+            </div>
+            <div ng-show="categorySorting == true" class="pull-right action-buttons">
+                <a href="" class="blue"> <i class="normal-icon icon-reorder bigger-125"></i> </a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- 商品列表 -->
+<div class="col-sm-9">
+<div class="widget-box transparent">
+    <div class="widget-header widget-header-flat">
+        <h4 class="lighter">商品列表 </h4>
+    </div>
+</div>
+<!-- 状态下拉列表 -->
+<div class="vspace-4"></div>
+<div id="operationBarNormal" ng-hide="multiOperationMode">
+    <button style="width:105px;" class="btn btn-primary btn-sm" ng-click="createItem()"
+            ng-disabled="selectedCategoryId == undefined || editingItemIndex != undefined">
+        <i class="icon-plus"></i>添加商品
+    </button>
+    <div class="btn-group pull-right" dropdown is-open="isStatusDropdownOpen">
+        <button type="button" class="btn btn-white dropdown-toggle" style="height:34px; border:1px solid #ccc;">
+            {{selectedItemStatusFileterName}} <span class="icon-caret-down icon-on-right"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li ng-repeat="status in STATUS_DDMENU" ng-class="{divider:status.value=='divider'}">
+                <a href="" ng-if="status.value!='divider'" ng-click="changeStatusFilter(status)">{{status.name}}</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<div id="operationBarMulti" ng-show="multiOperationMode">
+    <button class="btn btn-warning btn-sm" ng-click="deleteMultiItems()">
+        <i class="icon-trash"></i>批量删除
+    </button>
+</div>
+
+<div class="vspace-4"></div>
+<table class="table table-striped table-bordered table-hover">
+<thead>
+<tr role="row">
+    <th class="center sorting_disabled" role="columnheader" rowspan="1" colspan="1"
+        aria-label="" style="width: 49px;"><label>
+        <input type="checkbox" class="ace" ng-model="isSelectedAllItems" ng-click="selectAllItems()">
+        <span class="lbl"></span> </label></th>
+    <th class="center sorting_disabled" role="columnheader" rowspan="1" colspan="1"
+        aria-label="">名称
+    </th>
+    <th class="center sorting_disabled" role="columnheader" rowspan="1" colspan="1"
+        aria-label="" style="width: 50px;">售价
+    </th>
+    <th class="center sorting_disabled" role="columnheader" rowspan="1" colspan="1"
+        aria-label="" style="width: 80px;">状态
+    </th>
+    <th class="center sorting_disabled" role="columnheader" rowspan="1" colspan="1"
+        aria-label="" style="width:80px;">上架
+    </th>
+    <th class="center sorting_disabled" role="columnheader" rowspan="1" colspan="1"
+        aria-label="" style="width:80px;">操作
+    </th>
+</tr>
+</thead>
+<tbody>
+<tr ng-repeat-start="item in items" ng-hide="$index == editingItemIndex">
+    <td class="center">
+        <label>
+            <input type="checkbox" class="ace" ng-model="item.isSelected" ng-change="selectItem($index)">
+            <span class="lbl"></span>
+        </label>
+    </td>
+    <td> {{item.name}}</td>
+    <td>{{item.price}}</td>
+    <td>
+        <span class="label label-xlg arrowed-in-right" ng-if="STATUS_DDMENU[item.status].class"
+              ng-class="STATUS_DDMENU[item.status].class">{{STATUS_DDMENU[item.status].name}}
+        </span>
+        <span ng-if="!STATUS_DDMENU[item.status].class">{{STATUS_DDMENU[item.status].name}}</span>
+    </td>
+    <td>
+        <label>
+            <input class="ace ace-switch ace-switch-4" name="isInSell" type="checkbox" ng-model="item.isInSell"
+                   ng-click="updateItemInSell($index)"/>
+            <span class="lbl"></span>
+        </label>
+    </td>
+    <td class="center">
+        <a href="" class="blue" ng-click="editItem($index)">
+            <i class="icon-pencil bigger-130"></i>
+        </a> &nbsp;
+        <a href="" class="red" ng-click="deleteItem($index)">
+            <i class="icon-trash bigger-130"></i>
+        </a>
+    </td>
+</tr>
+<!-- 编辑商品表单 -->
+<tr ng-repeat-end ng-show="$index == editingItemIndex">
+    <td colspan="6">
+        <div class="widget-box" style="opacity:1; z-index:0; border-bottom:none; margin:-10px; border:#fff solid 10px;">
+            <div class="widget-header widget-header-blue widget-header-flat">
+                <h5 class="lighter">编辑商品</h5>
+            </div>
+            <div class="widget-body">
+                <div class="widget-body-inner" style="display: block;">
+                    <div class="widget-main">
+                        <form class="form-inline" name="formItem" role="form" novalidate>
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <div class="form-group">
+                                        <span class="lbl control-label no-padding-right">上架：</span>
+                                        <input class="ace ace-switch ace-switch-4" name="isInSell"
+                                               type="checkbox" ng-model="item.isInSell"/>
+                                        <span class="lbl"></span>
+
+                                        <span class="lbl control-label no-padding-right">选择分类：</span>
+                                        <!-- 商品表单中的分类列表 -->
+                                        <div id="itemCategories" class="btn-group" dropdown
+                                             is-open="isItemCategoryDropdownOpen">
+                                            <!--商品分类：-->
+                                            <button type="button" class="btn btn-white btn-sm dropdown-toggle"
+                                                    style="border:#ccc solid 1px;">
+                                                {{item.categoryName}}
+                                                <span class="icon-caret-down icon-on-right"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li ng-repeat="category in categories">
+                                                    <a href="" ng-click="updateItemCategory(item, category)">{{category.name}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!-- !商品表单中的分类列表 -->
+                                    </div>
+                                    <div class="space-8"></div>
+
+                                    <div class="form-group"
+                                         ng-class="{'has-error':formItem.name.$dirty && formItem.name.$invalid}">
+                                        <span class="lbl control-label no-padding-right">名称：</span>
+
+                                        <input name="name" style="width:280px;margin-left:-3px;" type="text"
+                                               placeholder="必填，不超过50个字"
+                                               ng-model="item.name" maxlength="50" required>
+
+                                        <div class="help-block"
+                                             ng-show="formItem.name.$dirty && formItem.name.$invalid">
+                                                <span style="padding-left:36px;"
+                                                      ng-show="formItem.name.$error.required">请输入商品名称</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-8"></div>
+                                    <div class="form-group">
+                                        <span class="lbl control-label no-padding-right">状态：</span>
+                                        <span ng-repeat="status in STATUS_RADIO">
+                                            <input class="ace" type="radio" ng-model="item.status" name="status"
+                                                   ng-value="status.value" required>
+                                            <span class="lbl">&nbsp;{{status.name}}</span>
+                                        </span>
+                                    </div>
+
+                                    <div class="space-8"></div>
+                                    <div class="form-group">
+                                        <span class="lbl control-label">原价：</span>
+                                        <input style="width:80px;" type="number"
+                                               ng-model="item.originalPrice" min="0" max="999999">
+                                    </div>
+                                    <div class="form-group"
+                                         ng-class="{'has-error':formItem.price.$dirty && formItem.price.$invalid}">
+                                        <span class="lbl control-label">现价：</span>
+                                        <input style="width:80px;" type="number" name="price" ng-model="item.price"
+                                               min="0" max="999999" required/>
+                                    </div>
+                                    <div class="form-group"
+                                         ng-class="{'has-error':formItem.inventory.$dirty && formItem.inventory.$invalid}">
+                                        <span class="lbl control-label">库存：</span>
+                                        <input type="number" name="inventory" ng-model="item.inventory"
+                                               ng-disabled="item.isInventoryInf" min="1" max="999999" required
+                                               style="width:80px"/>
+                                        <input class="ace" type="checkbox" ng-model="item.isInventoryInf"
+                                               ng-change="setInfInventory(item)" required/>
+                                        <span class="lbl">&nbsp;无限 </span>
+                                    </div>
+                                    <div class="has-error">
+                                        <div class="help-block">
+                                            <span ng-show="formItem.price.$dirty && formItem.price.$invalid">请输入价格</span>
+                                            <span ng-show="formItem.inventory.$dirty && formItem.inventory.$invalid">请输入库存</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div wlc-file-uploader="{type:'image', desc:''}"
+                                         ng-model="item.picUrl" name="picUrl"></div>
+                                    <div class="text-danger"
+                                         ng-show="formItem.picUrl.$invalid">
+                                        <span ng-if="formItem.picUrl.$error.errMsg">{{formItem.picUrl.$error.errMsg}}</span>
+                                        <span ng-if="!formItem.picUrl.$error.errMsg">请上传图片</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-8"></div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <span class="lbl control-label no-padding-right">简述：</span>
+                                        <textarea name="brief" style="width:607px;" rows="4" type="text"
+                                                  placeholder="选填，不超过100个字"
+                                                  ng-model="item.brief" name="brief" maxlength="100"></textarea>
+                                    </div>
+
+                                    <div class="space-8"></div>
+                                    <!-- item details -->
+
+                                    <div class="form-group">
+                                        <span class="lbl control-label no-padding-right">详情 ：</span>
+                                        <label>
+                                            <input class="ace ace-switch ace-switch-4" name="detailEnabled"
+                                                   type="checkbox" ng-model="item.detailEnabled"
+                                                   ng-change="toggleItemEditor(item)"/>
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                    <div class="space-8"></div>
+                                    <div id="itemEditorPlaceholder_{{item.id}}"></div>
+                                    <div class="form-group">
+                                        <alert type="danger" style="width:652px;" ng-show="itemSavingErrMsg!=undefined">
+                                            {{itemSavingErrMsg}}
+                                        </alert>
+                                    </div>
+
+                                    <div class="form-actions center" style="margin-bottom:0px; ">
+                                        <button type="submit"
+                                                class="btn btn-primary btn-sm" ng-click="saveItem($index, formItem)">
+                                            <i class="icon-save bigger-110"></i>保存
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button type="button" class="btn btn-sm" ng-click="cancelItem($index)">
+                                            <i class="icon-remove bigger-110"></i>取消
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+
+<script id="itemEditor" name="itemEditor" type="text/plain"></script>
+<script type="text/ng-template" id="confirmAlertTemplate">
+    <div class="modal-body"><h4>{{confirmAlertMsg}}</h4></div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-click="modalOk()">确定</button>
+        <button class="btn btn-sm" ng-click="modalCancel()">取消</button>
+    </div>
+</script>

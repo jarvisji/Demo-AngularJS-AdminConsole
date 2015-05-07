@@ -1,0 +1,552 @@
+<div class="page-header">
+    <h1> 商城设置 </h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+<div class="col-sm-12">
+<tabset>
+<!-- ######################################################################### -->
+<tab heading="基本设置" ng-click="changeTab('base')">
+    <form class="form-horizontal" name="formBase" role="form" novalidate >
+        <div class="space-4"></div>
+        <div class="form-group" ng-class="{'has-error':formBase.name.$dirty && formBase.name.$invalid}">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                店铺名称：</label>
+
+            <div class="col-sm-10">
+                <input class="col-sm-8" type="text" placeholder="必填,不超过20个字" ng-model="base.name" name="name"
+                       maxlength="20" required>
+            </div>
+            <div class="col-sm-offset-2 col-sm-10 red" ng-show="formBase.name.$dirty && formBase.name.$invalid">
+                <span class="red" ng-show="formBase.name.$error.required">请输入店铺名称 </span>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error':formBase.pics.$dirty && formBase.pics.$invalid}">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                首页图片：</label>
+
+            <div class="col-sm-10">
+                <div wlc-file-uploader="{type:'image', desc:'建议图片尺寸为640x380像素。', queueLimit:5}"
+                     ng-model="base.pics" name="pics" required></div>
+            </div>
+            <div class="col-sm-10 col-sm-offset-2">
+                <div class="help-block" ng-show="formBase.pics.$dirty">
+                    <span ng-if="formBase.pics.$error.errMsg">{{formBase.pics.$error.errMsg}}</span>
+                    <span ng-if="formBase.pics.$error.required">请上传图片</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error':formBase.desc.$dirty && formBase.desc.$invalid}">
+            <label class="col-sm-2 control-label no-padding-right"> 店铺简介：</label>
+            <div class="col-sm-10">
+                <textarea style="padding-left:4px;" class="col-sm-8" type="text" placeholder="可选，不超过300个字"
+                          ng-model="base.desc" name="desc" maxlength="300"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error':formBase.address.$dirty && formBase.address.$invalid}">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                店铺地址：</label>
+
+            <div class="col-sm-10">
+                <input class="col-sm-8" type="text" placeholder="必填，不超过50个字" ng-model="base.address" name="address"
+                       maxlength="50" required>
+            </div>
+            <div class="col-sm-offset-2 col-sm-10 red" ng-show="formBase.address.$dirty && formBase.address.$invalid">
+                <span class="red" ng-show="formBase.address.$error.required">请输入店铺地址 </span>
+            </div>
+
+        </div>
+
+        <div class="form-group" ng-class="{'has-error':formBase.tel.$dirty && formBase.tel.$invalid}">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                联系方式：</label>
+
+            <div class="col-sm-10">
+                <input class="col-sm-8" type="text" placeholder="必填" ng-model="base.tel" name="tel" maxlength="100"
+                       required>
+            </div>
+            <div class="col-sm-offset-2 col-sm-10 red" ng-show="formBase.tel.$dirty && formBase.tel.$invalid">
+                <span class="red" ng-show="formBase.tel.$error.required">请输入电话号码</span>
+            </div>
+
+        </div>
+
+        <div class="form-group" ng-class="{'has-error':formBase.shopHours.$dirty && formBase.shopHours.$invalid}">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                营业时间：</label>
+
+            <div class="col-sm-10">
+                <input class="col-sm-8" type="text" placeholder="必填" ng-model="base.shopHours" name="shopHours"
+                       maxlength="100" required>
+            </div>
+            <div class="col-sm-offset-2 col-sm-10 red"
+                 ng-show="formBase.shopHours.$dirty && formBase.shopHours.$invalid">
+                <span class="red" ng-show="formBase.shopHours.$error.required">请输入营业时间</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right"> 店铺公告：</label>
+
+            <div class="col-sm-10">
+                <textarea style="padding-left:4px;" class="col-sm-8" type="text" placeholder="可选，不超过500个字"
+                          ng-model="base.announcement" maxlength="500"
+                          name="announcement"></textarea>
+            </div>
+        </div>
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-2 control-label no-padding-right"> 底部版权：</label>-->
+
+            <!--<div class="col-sm-10">-->
+                <!--<input class="col-sm-8" type="text" placeholder="可选，不超过50个字" ng-model="base.copyright" maxlength="50"-->
+                       <!--name="copyright">-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <hr/>
+        <div class="form-group">
+            <div class="col-sm-offset-8 col-sm-2 pull-right">
+                <button class="btn btn-primary btn-block" type="button"
+                        ng-click="saveSettings(formBase)"
+                        ng-disabled="isUnchanged()">
+                    <i class="icon-ok bigger-110"></i>保存
+                </button>
+            </div>
+        </div>
+    </form>
+</tab>
+
+<!-- ######################################################################### -->
+<tab heading="公众号设置" ng-click="changeTab('wxpub')" class="hidden">
+    <form class="form-horizontal" name="formWxpub" role="form" novalidate >
+        <div class="space-4"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right"> 商城链接：</label>
+
+            <div class="col-sm-10">
+                <input class="col-sm-8" type="text" ng-model="wxpub.shopLink" disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                微信原始ID：</label>
+
+            <div class="col-sm-10">
+                <input class="col-sm-8" type="text" placeholder="" name="wxOriginalId" ng-model="wxpub.wxOriginalId"
+                       required>
+                <br/>
+                <br/>
+				<span>配置“一键关注公众号”时使用，类似于“gh_12位字母”的形式。<br/>
+                   <a href="http://jingyan.baidu.com/article/cdddd41c5a303553cb00e126.html?qq-pf-to=pcqq.discussion"
+                      target="_blank">查看怎样获得微信原始ID</a>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right"> 微信公众号二维码：</label>
+
+            <div class="col-sm-10" ng-if="tabName=='wxpub'">
+                <div wlc-file-uploader="{type:'image', desc:'请在微信公众平台下载。'}"
+                     ng-model="wxpub.wxQrCode" name="wxQrCode"></div>
+                <!--<div class="help-block" ng-show="!form.$invalid && uploader.queue.length == 0">-->
+                <div class="help-block" ng-show="formWxpub.wxQrCode.$dirty && formWxpub.wxQrCode.$invalid">
+                    <span>请上传图片</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                公众号类型：</label>
+
+            <div class="col-sm-10">
+                <input class="ace" type="radio" ng-model="wxpub.wxPubType" name="wxPubType" value="sub" required/>
+                <span class="lbl">&nbsp;订阅号</span>&nbsp;&nbsp;
+                <input class="ace" type="radio" ng-model="wxpub.wxPubType" name="wxPubType" value="certSub" required/>
+                <span class="lbl">&nbsp;认证订阅号</span>&nbsp;&nbsp;
+                <input class="ace" type="radio" ng-model="wxpub.wxPubType" name="wxPubType" value="serv" required/>
+                <span class="lbl">&nbsp;服务号</span>&nbsp;&nbsp;
+                <input class="ace" type="radio" ng-model="wxpub.wxPubType" name="wxPubType" value="sertServ" required/>
+                <span class="lbl">&nbsp;认证服务号</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                开发者凭据：</label>
+
+            <div class="col-sm-10">
+                <label class="col-sm-2 control-label no-padding-right">AppId：</label>
+                <input class="col-sm-6" type="text" name="wxAppId" ng-model="wxpub.wxAppId" required/>
+                <br/>
+                <br/>
+                <label class="col-sm-2 control-label no-padding-right">AppAppSecret：</label>
+                <input class="col-sm-6" type="text" name="wxAppSecret" ng-model="wxpub.wxAppSecret" required/>
+                <br/>
+                <br/>
+                <label class="col-sm-2 control-label no-padding-right"></label>
+                <span>服务号和认证的订阅号才有开发者凭据，用于自定义菜单和高级接口。 </span>
+                <br/>
+                <label class="col-sm-2 control-label no-padding-right"></label>
+							<span> <a href="http://jingyan.baidu.com/article/6525d4b12af618ac7c2e9468.html"
+                                      target="_blank">查看如何获得参数</a> </span>
+            </div>
+        </div>
+        <hr/>
+        <div class="form-group">
+            <div class="col-sm-offset-8 col-sm-2 pull-right">
+                <button class="btn btn-primary btn-block" type="button"
+                        ng-click="saveSettings(formWxpub)"
+                        ng-disabled="isUnchanged()">
+                    <i class="icon-ok bigger-110"></i>保存
+                </button>
+            </div>
+        </div>
+    </form>
+</tab>
+<!-- ######################################################################### -->
+<tab heading="支付设置" ng-click="changeTab('payment')" class="hidden">
+    <b>支付接口需要调试，这一步放到最后做。</b>
+
+    <form class="form-horizontal" name="formPayment" role="form" novalidate >
+        <input type="checkbox" ng-model="payment.cod" ng-checked="payment.cod">
+        货到付款
+        <input type="checkbox" ng-model="payment.alipay" ng-checked="payment.alipay">
+        支付宝
+        <input type="checkbox" ng-model="payment.weixin" ng-checked="payment.weixin">
+        微信支付
+        <button type="btn" ng-click="saveSettings(formPayment)">
+            保存
+        </button>
+    </form>
+</tab>
+<!-- ######################################################################### -->
+<tab heading="配送设置" ng-click="changeTab('shipping')">
+    <form class="form-horizontal" name="formShipping" role="form" novalidate >
+        <div class="page-header">
+            <label class="control-label bolder blue"> 配送范围设置 </label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right"> 店铺地址：</label>
+
+            <div class="col-sm-10">
+                <input class="col-sm-8" type="text" ng-model="base.address" disabled>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error':formShipping.area.$dirty && formShipping.area.$invalid}">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                配送范围： </label>
+
+            <div class="col-sm-10">
+                <input class="col-sm-8" type="text" placeholder="必填,不超过50个字" ng-model="shipping.area" name="area"
+                       maxlength="50" required>
+                <!--<br/>
+                <br/>
+                <span>请输入您所支持的配送范围（例如商铺周边5公里范围内）</span>-->
+            </div>
+            <div class="col-sm-offset-2 col-sm-10 red" ng-show="formShipping.area.$dirty && formShipping.area.$invalid">
+                <span class="red" ng-show="formShipping.area.$error.required">请输入外送送地址</span>
+            </div>
+        </div>
+
+        <div class="page-header">
+            <label class="control-label bolder blue">
+                <small class="red">*</small>
+                配送费用设置 </label>
+        </div>
+        <alert type="info">
+            如需修改公告内容，请确保与设置项一致。
+        </alert>
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right">
+                <input class="ace" type="radio" ng-model="shipping.feeType" name="feeType" value="free"
+                       ng-click="showDefaultAnnouncement('free')" required/>
+                <span class="lbl">免费配送</span> </label>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right">
+                <input class="ace" type="radio" ng-model="shipping.feeType" name="feeType" value="fix"
+                       ng-click="showDefaultAnnouncement('fix')" required/>
+                <span class="lbl">固定收费</span></label>
+
+            <div class="col-sm-10">
+                <div style="margin-top:4px;">
+                    <span class="pull-left">每单外送金额&nbsp;&nbsp;</span>
+                    <input style="width:80px;" class="col-xs-1" type="number" name="fixFee" ng-model="shipping.fixFee"
+                           ng-change="showDefaultAnnouncement()" min="0" max="999999" required>
+                    <span>&nbsp;&nbsp;元</span>
+                </div>
+
+            </div>
+
+            <div class="col-sm-offset-2 col-sm-10 red"
+                 ng-show="formShipping.fixFee.$dirty && formShipping.fixFee.$invalid">
+                <span class="red" ng-show="formShipping.fixFee.$error.number">请输入数字格式 </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right">
+                <input class="ace" type="radio" ng-model="shipping.feeType" name="feeType" value="condition"
+                       ng-click="showDefaultAnnouncement('condition')" required/>
+                <span class="lbl">条件免费</span> </label>
+
+            <div class="col-sm-10">
+                <div style="margin-top:4px;">
+                    <span class="pull-left">消费金额低于&nbsp;&nbsp;</span>
+                    <input style="width:80px;" class="col-xs-1" type="number" name="conditionOrder"
+                           ng-model="shipping.conditionOrder"
+                           ng-change="showDefaultAnnouncement()" min="0" max="999999" required>
+                    <span class="pull-left"> &nbsp;&nbsp;元，收取&nbsp;&nbsp;</span>
+                    <input style="width:80px;" class="col-xs-1" type="number" name="conditionFee"
+                           ng-model="shipping.conditionFee"
+                           ng-change="showDefaultAnnouncement()" min="0" max="999999" required>
+                    <span>&nbsp;&nbsp;元外送费</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right"> 配送费用公告： </label>
+
+            <div class="col-sm-10">
+                <textarea style="padding-left:4px;" class="col-sm-8" ng-model="shipping.announcement"
+                          name="announcement" rows="3" cols="50" maxlength="100">
+                </textarea>
+            </div>
+        </div>
+
+        <hr>
+        <div class="form-group">
+            <div class="col-sm-offset-8 col-sm-2 pull-right">
+                <button class="btn btn-primary btn-block" type="button"
+                        ng-click="saveSettings(formShipping)"
+                        ng-disabled="isUnchanged()">
+                    <i class="icon-ok bigger-110"></i>保存
+                </button>
+            </div>
+        </div>
+    </form>
+</tab>
+<!-- ######################################################################### -->
+<tab heading="订单提醒设置" ng-click="changeTab('reminder')">
+    <form class="form-horizontal" name="formReminder" role="form" novalidate >
+        <div class="space-4"></div>
+        <div class="form-group">
+            <div class="col-sm-2 col-sm-offset-2">
+                <input class="ace" type="checkbox" ng-model="reminder.smsEnabled" ng-checked="reminder.smsEnabled">
+                <span class="lbl">&nbsp;短信提醒</span>
+            </div>
+        </div>
+        <div class="form-group"
+             ng-class="{'has-error':formReminder.smsPhoneNum.$dirty && formReminder.smsPhoneNum.$invalid}">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                手机号码：</label>
+
+            <div class="col-sm-10">
+                <input class="col-sm-8" type="text" placeholder="必填，11位手机号码" ng-model="reminder.smsPhoneNum"
+                       ng-pattern="/^1[3-8]\d{9}$/" ng-disabled="!reminder.smsEnabled"
+                       name="smsPhoneNum" maxlength="11" required>
+            </div>
+            <div class="col-sm-offset-2 col-sm-10 red"
+                 ng-show="formReminder.smsPhoneNum.$dirty && formReminder.smsPhoneNum.$invalid">
+                <span ng-show="formReminder.smsPhoneNum.$error.required">请输入手机号码 </span>
+                <span ng-show="formReminder.smsPhoneNum.$error.pattern">手机号码格式不正确 </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right"> 短信模板： </label>
+
+            <div class="col-sm-10">
+                <textarea style="padding-left:4px;" class="col-sm-8" placeholder="" ng-model="temp.smsContent"
+                          name="smsContent" rows="3" cols="50" disabled>
+                </textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right"> 本月免费短信数：</label>
+
+            <div class="col-sm-10">
+                <span class="red bold">{{temp.smsHistoryCount}} 已发送</span> /
+                <span class="red bold">{{temp.smsLimit}} 总数</span>
+                <br/>
+                您当前套餐包含每月{{temp.smsLimit}}条短信，如需更多请购买业务包。
+            </div>
+        </div>
+
+        <hr>
+        <div class="form-group">
+            <div class="col-sm-offset-8 col-sm-2 pull-right">
+                <button class="btn btn-primary btn-block" type="button"
+                        ng-click="saveSettings(formReminder)" ng-disabled="isUnchanged()">
+                    <i class="icon-ok bigger-110"></i>保存
+                </button>
+            </div>
+        </div>
+    </form>
+
+</tab>
+<!-- ######################################################################### -->
+<tab heading="积分获取规则设置" ng-click="changeTab('points')">
+    <alert type="info">
+        如需修改公告内容，请确保与设置项一致。
+    </alert>
+    <form class="form-horizontal" name="formPointsGain" role="form" novalidate >
+        <div class="form-group">
+            <label class="col-xs-2 control-label no-padding-right"> 启用积分： </label>
+
+            <div class="col-xs-10">
+                <input class="ace ace-switch ace-switch-4" name="isEnable"
+                       type="checkbox" ng-model="points.isEnable"/>
+                <span class="lbl"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                积分获取规则： </label>
+
+            <div class="col-sm-10">
+                <span class="pull-left"> 每成功消费&nbsp;&nbsp;</span>
+                <input style="width:80px;" class="col-xs-1" name="costTrans" type="number" placeholder=""
+                       ng-model="points.costTrans" min="1" max="999999" required ng-change="showPointsAnnouncement()"/>
+                <span>&nbsp;&nbsp;元，可获取1积分。</span>
+            </div>
+            <!--ng-show="formPointsGain.costTrans.$dirty && formPointsGain.costTrans.$invalid"-->
+            <div class="col-sm-offset-2 col-sm-10 red"
+                 ng-show="formPointsGain.costTrans.$dirty && formPointsGain.costTrans.$invalid">
+                <span class="red" ng-show="formPointsGain.costTrans.$error.required">请输入积分 </span>
+                <span class="red" ng-show="formPointsGain.costTrans.$error.min || formPointsGain.costTrans.$error.max">积分应在1-999999之间 </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label no-padding-right">
+                <small class="red">*</small>
+                积分规则公告： </label>
+
+            <div class="col-sm-10">
+                <textarea style="padding-left:4px;" class="col-sm-8" ng-model="points.announcement"
+                          name="pointsAnnouncement" rows="3" cols="50" maxlength="100">
+                </textarea>
+            </div>
+        </div>
+
+        <hr>
+        <div class="form-group">
+            <div class="col-sm-offset-8 col-sm-2  pull-right">
+                <button class="btn btn-primary btn-block" type="button"
+                        ng-click="saveSettings(formPointsGain)"
+                        ng-disabled="isUnchanged()">
+                    <i class="icon-ok bigger-110"></i>保存
+                </button>
+            </div>
+        </div>
+    </form>
+</tab>
+<!-- ######################################################################### -->
+<tab heading="积分兑换规则设置" ng-click="changeTab('pointsExchange')">
+    <alert type="info">
+        <ul>
+            <li>
+                需要在“积分获取规则设置”中启用积分，此处设置的兑换商品才会生效。
+            </li>
+            <li>
+                编辑状态下，在商品名称中输入文字，将显示所有匹配的商品列表。
+            </li>
+        </ul>
+    </alert>
+    <form class="form-horizontal" name="formPointsExchange" role="form" novalidate >
+        <div class="clearfix">
+            <button class="col-sm-2 btn btn-primary" ng-click="addPointsItem()">
+                <i class="icon-plus"></i>新增
+            </button>
+        </div>
+        <div class="vspace-4"></div>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <td class="center">启用</td>
+                <td class="center">商品名称</td>
+                <td class="center">兑换所需积分</td>
+                <td class="center">操作</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="pointsItem in pointsItems">
+                <td class="center"><label>
+                    <input type="checkbox" class="ace" ng-model="pointsItem.isEnable"
+                           ng-change="togglePointsItemEnable($index)">
+                    <span class="lbl"></span> </label></td>
+                <td class="center"><span ng-show="editingPointsItemIndex!=$index">{{pointsItem.itemName}}</span>
+
+                    <div ng-show="editingPointsItemIndex==$index">
+                        <input type="text" name="selectedGoodsItem" placeholder="必填" ng-model="selectedGoodsItem"
+                               typeahead-editable="false"
+                               typeahead="goodsItem as goodsItem.name for goodsItem in goodsItems | filter:{name:$viewValue}"
+                               class="form-control" required/>
+                        <span class="red pull-left" ng-show="formPointsExchange.selectedGoodsItem.$error.required">请输入商品名称</span>
+                        <span class="red pull-left"
+                              ng-show="formPointsExchange.selectedGoodsItem.$dirty && !selectedGoodsItem">无此商品</span>
+                    </div>
+
+                </td>
+                <td class="center">
+                    <span ng-show="editingPointsItemIndex!=$index">{{pointsItem.requirePoints}}</span>
+
+                    <div ng-show="editingPointsItemIndex==$index">
+                        <input class="form-control" type="number" ng-model="pointsItem.requirePoints" min="0"
+                               max="999999" name="requirePoints" placeholder="必填" required/>
+                        <span class="red pull-left"
+                              ng-show="formPointsExchange.requirePoints.$dirty && formPointsExchange.requirePoints.$error.required">请输入积分</span>
+                    </div>
+                </td>
+                <td class="center">
+                    <a href="" class="blue"
+                       ng-click="editPointsItem($index)" ng-show="editingPointsItemIndex!=$index">
+                        <i class="icon-pencil bigger-130"></i>
+                    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="" class="red"
+                       ng-click="deletePointsItem($index)" ng-show="editingPointsItemIndex!=$index">
+                        <i class="icon-trash bigger-130"></i>
+                    </a>
+
+                    <div style="margin-left:-5px; margin-top:-10px;">
+                        <a href="" class="blue" ng-click="savePointsItem($index, formPointsExchange)"
+                           ng-show="editingPointsItemIndex==$index">
+                            <i class="icon-ok bigger-130"></i>
+                        </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="" class="red"
+                           ng-click="cancelPointsItem($index)" ng-show="editingPointsItemIndex==$index">
+                            <i class="icon-remove bigger-130"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </form>
+</tab>
+
+</tabset>
+</div>
+</div>

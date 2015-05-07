@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-cn" ng-app="demoConsoleMod" ng-controller="wlcRootCtrl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="overview &amp; stats"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>-控制台</title>
+    <link href="common/lib/css/bootstrap.min.css" rel="stylesheet">
+    <link href="common/lib/css/font-awesome.min.css" rel="stylesheet">
+    <link href="common/lib/css/jquery.gritter.css" rel="stylesheet">
+    <link href="common/lib/css/ace.min.css" rel="stylesheet">
+
+    <link href="common/components/umeditor/themes/default/css/umeditor.css" rel="stylesheet">
+    <link href="common/static/css/demo.css" rel="stylesheet">
+
+</head>
+<body>
+<div ng-controller="wlcHeaderCtrl">
+    <wlc-header></wlc-header>
+</div>
+
+<div class="main-container container" id="main-container">
+    <!-- account home with menu, user home without menu -->
+    <div class="main-container-inner">
+        <div ng-show="wxAccountId!='undefined' && wxAccountId != undefined" ng-controller="wlcMenuCtrl">
+            <wlc-menu></wlc-menu>
+        </div>
+
+        <div ng-class="{'main-content': wxAccountId!='undefined' && wxAccountId != undefined}">
+            <div class="page-content">
+                <div ng-view></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.main-container -->
+<script src="common/lib/js/angular.min.js"></script>
+<script src="common/lib/js/angular-route.min.js"></script>
+<script src="common/lib/js/ui-bootstrap-tpls.js"></script>
+<script src="common/lib/js/jquery-2.0.3.min.js"></script>
+<script src="common/lib/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="common/lib/js/jquery.gritter.js"></script>
+
+<script src="common/components/umeditor/umeditor.config.js"></script>
+<script src="common/components/umeditor/umeditor.js"></script>
+<script src="common/components/umeditor/lang/zh-cn/zh-cn.js"></script>
+
+<script src="common/components/menu/menu-controller.js"></script>
+<script src="common/components/header/header-controller.js"></script>
+<script src="common/components/uploader/wlc-file-uploader.js"></script>
+<script src="common/components/uploader/angular-file-upload.js"></script>
+<script src="common/utils/wlc-utils.js"></script>
+<script src="common/wlc-helpers.js"></script>
+<script src="base/index-controller.js"></script>
+<script src="album/album-controller.js"></script>
+</body>
+</html>

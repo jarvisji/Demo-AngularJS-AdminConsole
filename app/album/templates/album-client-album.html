@@ -1,0 +1,28 @@
+这是相册中的照片
+<div class="row">
+    <div class="col-md-12" ng-show="album == undefined || album.photo.length == 0">
+        <span>没有照片</span>
+    </div>
+    <div ng-show="!slideMode">
+        <div class="col-xs-6 col-md-3" ng-repeat="photo in album.photos">
+            <a href="" class="thumbnail" ng-click="showPhotoSlide($index)">
+                <img ng-src="{{photo.url}}">
+            </a>
+            <span>{{photo.filename}}</span>
+            <span>{{photo.description}}</span>
+        </div>
+    </div>
+    <div ng-show="slideMode">
+        <div style="position: fixed; top:10px;right:10px;z-index: 1000">
+            <button type="button" class="close" ng-click="closeSlide()"><span aria-hidden="true">&times;</span><span
+                    class="sr-only">Close</span></button>
+        </div>
+        <div class="col-sm-12" style="overflow-y: hidden" ng-swipe-left="swipeLeft()" ng-swipe-right="swipeRight()" ng-click="closeSlide()">
+            <img ng-src="{{photo.url}}" style="width: 100%">
+
+            <div style="position: fixed; bottom: 10px">
+                <span>{{photo.description}}</span>
+            </div>
+        </div>
+    </div>
+</div>

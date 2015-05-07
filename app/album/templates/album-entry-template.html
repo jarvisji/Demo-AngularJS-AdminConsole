@@ -1,0 +1,128 @@
+<div class="page-header">
+    <h1> 相册入口消息设置 </h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal" name="form" role="form">
+                    <div class="space-4"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right">启用 ： </label>
+
+                        <div class="col-sm-10">
+                            <label>
+                                <input class="ace ace-switch ace-switch-4" name="enable" type="checkbox"
+                                       ng-model="entry.enable"/>
+                                <span class="lbl"></span> </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-right"> 相册地址： </label>
+
+                        <div class="col-sm-10">
+                            <span class="col-sm-8">{{entryUrl}}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-class="{'has-error':form.keyword.$dirty && form.keyword.$invalid}">
+                        <label class="col-sm-2 control-label no-padding-right">
+                            <small class="red">*</small>
+                            关键词： </label>
+
+                        <div class="col-sm-10">
+                            <input class="col-sm-8" name="keyword" type="text"
+                                   placeholder="必填，不少于2个字" ng-model="entry.keyword" ng-minlength="2" maxlength="30"
+                                   required/>
+
+                            <!--<div class="help-block" ng-show="form.keyword.$dirty && form.keyword.$invalid">
+                            <span>请输入关键词</span>
+                            </div>-->
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10 red"
+                             ng-show="form.keyword.$dirty && form.keyword.$invalid">
+                            <span class="red" ng-show="form.keyword.$error.required">请输入关键字</span>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+                    <div class="form-group" ng-class="{'has-error':form.title.$dirty && form.title.$invalid}">
+                        <label class="col-sm-2 control-label no-padding-right help-block">
+                            <small class="red">*</small>
+                            标题： </label>
+
+                        <div class="col-sm-10">
+                            <input class="col-sm-8" name="title" type="text" placeholder="必填，不少于4个字"
+                                   ng-model="entry.title"
+                                   ng-minlength="4" maxlength="50" required/>
+
+                            <!--<div class="help-block" ng-show="form.title.$dirty && form.title.$invalid">
+                            <span>请输入标题</span>
+                            </div>-->
+
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10 red" ng-show="form.title.$dirty && form.title.$invalid">
+                            <span class="red" ng-show="form.title.$error.required">请输入标题</span>
+                        </div>
+
+                    </div>
+
+                    <div class="space-4"></div>
+                    <div class="form-group" ng-class="{'has-error':form.coverUrl.$dirty && form.coverUrl.$invalid}">
+
+                        <label class="col-sm-2 control-label no-padding-right">
+                            <small class="red">*</small>
+                            图片： </label>
+
+                        <div class="col-sm-10">
+                            <div wlc-file-uploader="{type:'image', desc:'建议图片尺寸250像素 x 140像素。', targetName:'wxmsg-album', appendTs:'each'}"
+                                 ng-model="entry.coverUrl" name="coverUrl" required></div>
+                            <div class="help-block" ng-show="form.coverUrl.$dirty && form.coverUrl.$invalid">
+                                <span ng-if="form.coverUrl.$error.errMsg">{{form.coverUrl.$error.errMsg}}</span>
+                                <span ng-if="!form.coverUrl.$error.errMsg">请上传图片</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-4"></div>
+                    <div class="form-group" ng-class="{'has-error':form.desc.$dirty && form.desc.$invalid}">
+
+                        <label class="col-sm-2 control-label no-padding-right help-block">
+                            <small class="red">*</small>
+                            摘要： </label>
+
+                        <div class="col-sm-10">
+                            <textarea class="col-sm-8" style="padding-left:4px;" name="summary"
+                                      placeholder="必填，不超过64个字"
+                                      ng-model="entry.summary" maxlength="64" required></textarea>
+                            <!--<div class="help-block" ng-show="form.desc.$dirty && form.desc.$invalid">
+                            <span>请输入摘要</span>
+                            </div>-->
+
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-10 red"
+                             ng-show="form.summary.$dirty && form.summary.$invalid">
+                            <span class="red" ng-show="form.summary.$error.required">请输入摘要</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <div class="col-sm-offset-8 col-sm-2 pull-right">
+                            <button class="btn btn-primary btn-block" type="button" ng-click="saveEntry(form)"
+                                    ng-disabled="isUnchanged()">
+                                <!--ng-disabled="form.$invalid || isUnchanged(entry)"-->
+                                <i class="icon-ok bigger-110"></i>保存
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /row -->
+        <!-- PAGE CONTENT ENDS -->
+    </div>
+    <!-- /.col -->
+</div><!-- /.row -->

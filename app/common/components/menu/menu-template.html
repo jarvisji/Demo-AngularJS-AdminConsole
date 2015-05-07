@@ -1,0 +1,26 @@
+<div>
+    <div class="sidebar" id="sidebar">
+        <ul class="nav nav-list">
+            <li ng-repeat="menu in menuItems" ng-class="{active:menu.isActive, open:menu.isActive}">
+                <a href="" ng-click="activeMenu($index)">
+                    <i class="{{menu.iconClass}}"></i>
+                    <span class="menu-text">{{menu.name}} </span>
+                    <b class="arrow icon-angle-down"></b>
+                </a>
+
+                <ul class="submenu">
+                    <li ng-repeat="subMenu in menu.subMenu" ng-class="{active:subMenu.isActive}">
+                        <a ng-if="menu.linkVersion=='0.1'" ng-href="{{v1ContextPath}}/{{subMenu.link}}"
+                           ng-click="activeSubMenu($index)">
+                            <i class="icon-double-angle-right"></i> {{subMenu.name}}
+                        </a>
+                        <a ng-if="menu.linkVersion=='0.2'" ng-href="#/{{wxAccountId}}/{{subMenu.link}}"
+                           ng-click="activeSubMenu($index)">
+                            <i class="icon-double-angle-right"></i> {{subMenu.name}}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
